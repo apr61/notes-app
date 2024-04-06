@@ -3,6 +3,7 @@
 A markdown application where you can store your notes seamlessly on the go.
 
 ## Technologies used
+
 1. [React](https://react.dev/)
 2. [Typescript](https://www.typescriptlang.org/)
 3. [React Markdown](https://www.npmjs.com/package/react-markdown) (For Rendering markdown data)
@@ -15,9 +16,10 @@ A markdown application where you can store your notes seamlessly on the go.
 
 ## Steps for running
 
-1. Open your faviorite terminal as paste the below commands.
+- Open your faviorite terminal as paste the below commands.
 
-```
+```sh
+
 git clone https://github.com/apr61/notes-app.git
 
 cd notes-app
@@ -26,7 +28,7 @@ npm install
 
 ```
 
-2. Update the `.env` with your project details of __Firebase__.
+- Update the `.env` with your project details of __Firebase__.
 
 ```ts
 VITE_APP_FIREBASE_API_KEY = ""
@@ -38,9 +40,9 @@ VITE_APP_FIREBASE_APP_ID = ""
 VITE_APP_FIREBASE_MEASUREMENT_ID = ""
 ```
 
-3. Run the project
+- Run the project
 
-```
+``` sh
 npm run dev
 ```
 

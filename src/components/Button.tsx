@@ -3,7 +3,7 @@ type ButtonProps = {
     text: string
     handleClick: () => void
     styles: string
-    btnType: "button" | "submit" | "reset" | undefined
+    btnType?: "button" | "submit" | "reset" | undefined
 }
 
 const Button = ({ text, handleClick, styles, btnType="button" }: ButtonProps) => {

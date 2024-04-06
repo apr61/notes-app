@@ -1,16 +1,18 @@
 import { FormEvent, useState } from "react"
-import Markdown from "react-markdown"
 import { useNavigate } from "react-router-dom"
-import remarkGfm from 'remark-gfm'
 import Button from "./Button"
+import { Editor } from "@monaco-editor/react"
+import { NoteDataType, NoteType } from "../context/Notes"
+import toast from "react-hot-toast"
+import MarkdownPreview from "./MarkdownPreview"
 
 type NoteFormProps = {
-	onSubmit: (data: any) => void,
-}
+	onSubmit: (data: NoteDataType) => void,
+} & Partial<NoteType>
 
-const NoteForm = ({ onSubmit }: NoteFormProps) => {
-	const [title, setTitle] = useState<string>('')
-	const [markdown, setMarkdown] = useState<string>('')
+const NoteForm = ({ onSubmit, title : editTitle = "", markdown: editMarkdown = "" }: NoteFormProps) => {
+	const [title, setTitle] = useState<string>(editTitle)
+	const [markdown, setMarkdown] = useState<string | undefined>(editMarkdown)
 
 	const navigate = useNavigate()
 
@@ -20,24 +22,24 @@ const NoteForm = ({ onSubmit }: NoteFormProps) => {
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault()
+		if (markdown?.trim().length === 0) {
+			toast.error('Note can\'t be empty')
+			return 
+		}
 		onSubmit({
 			title: title,
-			markdown: markdown,
+			markdown: markdown as string,
 		})
-		navigate('..')
 	}
 
-	const handleTextAreaOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setMarkdown(e.target.value)
-		e.target.style.height = 'inherit'
-		e.target.style.height = `${e.target.scrollHeight}px`
+	const handleEditorText = (value: string | undefined) => {
+		setMarkdown(value)
 	}
 
 	return (
 		<form className="my-4 flex gap-4 flex-col" onSubmit={handleSubmit}>
 			<div className="flex gap-2">
 				<div className="flex flex-col gap-2 grow">
-					<label htmlFor="title" className="text-xl">Title</label>
 					<input
 						type="text"
 						id="title"
@@ -46,42 +48,35 @@ const NoteForm = ({ onSubmit }: NoteFormProps) => {
 						autoFocus={true}
 						defaultValue={title}
 						onChange={(e) => setTitle(e.target.value)}
+						placeholder="Enter title of note"
 						required />
 				</div>
-			</div>
-			<div className="flex flex-col gap-2">
-				<label htmlFor="body" className="text-xl">Body</label>
-				<div className="flex gap-2 w-full">
-					<textarea
-						id="body"
-						name="body"
-						rows={15}
-						className="border-2 rounded-md border-gray-200 p-4 text-lg resize-none overflow-hidden w-1/2"
-						defaultValue={markdown}
-						onChange={handleTextAreaOnChange}
-						required
-					>
-					</textarea>
-					<div className="w-1/2 p-4 border-2 rounded-md overflow-auto">
-						<Markdown className="prose" remarkPlugins={[remarkGfm]}>
-							{markdown}
-						</Markdown>
-					</div>
+				<div className="ml-auto flex gap-4">
+					<Button
+						btnType="submit"
+						styles="py-2 px-6 rounded-md bg-blue-500 text-white hover:bg-blue-600 self-end"
+						text="Save"
+						handleClick={() => { }}
+					/>
+					<Button
+						btnType="button"
+						styles="py-2 px-6 rounded-md bg-gray-500 text-white hover:bg-gray-600 self-end"
+						handleClick={handleCancel}
+						text="Cancel"
+					/>
 				</div>
 			</div>
-			<div className="ml-auto flex gap-4">
-				<Button
-					btnType="submit"
-					styles="py-2 px-6 rounded-md bg-blue-500 text-white hover:bg-blue-600"
-					text="Create"
-					handleClick={() => {}}
+			<div className="grid grid-cols-[1fr_30rem] gap-2">
+				<Editor
+					height='75vh'
+					className="w-1/2 p-2 rounded-md border"
+					defaultValue={markdown}
+					onChange={handleEditorText}
+					defaultLanguage="markdown"
 				/>
-				<Button
-					btnType="button"
-					styles="py-2 px-6 rounded-md bg-gray-500 text-white hover:bg-gray-600"
-					handleClick={handleCancel}
-					text="Cancel"
-				/>
+				<div className="h-[75vh] p-4 border-2 rounded-md overflow-y-scroll">
+					<MarkdownPreview markdown={markdown as string} />
+				</div>
 			</div>
 		</form>
 	)

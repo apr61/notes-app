@@ -52,6 +52,7 @@ const ShowNote = () => {
     }
     navigate('/')
   }
+  document.title = note?.title as string
 
   return (
     <div className="my-4 p-2">

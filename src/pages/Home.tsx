@@ -4,7 +4,7 @@ import NotesList from "../components/NotesList"
 
 const Home = () => {
   const [title, setTitle] = useState<string>('')
-
+  document.title = 'Home - Notes App'
   return (
     <>
       <form className="my-4 flex flex-col sm:flex-row gap-2">

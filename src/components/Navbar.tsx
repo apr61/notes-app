@@ -14,11 +14,6 @@ const Navbar = () => {
         <Link to='/create'
           className="bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-2 text-white mr-4"
         >Create</Link>
-        <Button
-          text="Edit Tags"
-          handleClick={() => { }}
-          styles="border rounded-md border-gray-400 text-gray-500 px-4 py-2 hover:text-white hover:bg-gray-500"
-        />
       </div>
     </nav>
   )

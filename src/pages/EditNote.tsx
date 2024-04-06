@@ -54,7 +54,7 @@ const EditNote = () => {
     if (isLoading) return <h1>Loading...</h1>
 
     if (note === null) return <NotFound />
-
+    document.title = `Edit - ${note?.title as string} - Notes App`
     return (
         <>
             <Navbar />

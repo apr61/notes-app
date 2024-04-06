@@ -26,6 +26,7 @@ const CreateNote = () => {
         }
     }
     if (loading) return <h1>Loading...</h1>
+    document.title = 'Create new note - Notes App'
     return (
         <>
             <Navbar />

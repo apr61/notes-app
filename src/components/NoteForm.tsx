@@ -88,7 +88,7 @@ const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = ""
 					onChange={handleEditorText}
 					defaultLanguage="markdown"
 				/>
-				<div className="h-[73vh] p-4 border-2 rounded-md overflow-y-scroll">
+				<div className="h-[73vh] p-4 border-2 mt-2 md:mt-0 rounded-md overflow-y-scroll">
 					<MarkdownPreview markdown={markdown as string} />
 				</div>
 			</div>

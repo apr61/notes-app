@@ -7,7 +7,7 @@ import { TagType } from "../context/Tags"
 const TagsList = () => {
     const { isLoading, availableTags, addNewTagFn, deleteTagFn, updateTagFn } = useTags()
     const [value, setValue] = useState<string>('')
-    const [edit, setEdit] = useState<TagType | undefined>()
+    const [edit, setEdit] = useState<TagType | undefined>(undefined)
 
     const handleAddOnClick = () => {
         if (value.trim().length === 0) {
@@ -19,13 +19,18 @@ const TagsList = () => {
             return
         }
         addNewTagFn({ tag: value })
+        setValue('')
+        setEdit(undefined)
     }
 
     const handleOnEdit = (id: string) => {
         const editingTag = availableTags.filter(tag => tag.id === id)[0]
         setValue(editingTag.tag)
         setEdit(editingTag)
+        console.log(edit)
+        console.log(value)
     }
+    // TODO:: Edit of TAG after adding a TAG is not  working.
 
     const content = availableTags.map((tag) => (
         <div className="flex gap-2 my-2" key={tag.id}>
@@ -57,7 +62,7 @@ const TagsList = () => {
                     id="new-tag"
                     className="border p-2 rounded-md w-full"
                     placeholder="New Tag"
-                    defaultValue={value}
+                    value={value}
                     onChange={(e) => setValue(e.target.value)}
                 />
                 <Button

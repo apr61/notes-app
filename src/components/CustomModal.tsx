@@ -10,7 +10,7 @@ type CustomModalProps = {
 const CustomModal = ({ children, isOpen, closeHandle }: CustomModalProps) => {
   if(!isOpen) return
   return (
-    <div onClick={closeHandle} className="fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-40 z-[10]">
+    <div className="fixed top-0 bottom-0 right-0 left-0 bg-black bg-opacity-40 z-[10]">
       <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-white z-1 p-2 md:p-4 max-w-xl w-full rounded-lg">
         <div className='realtive p-2'>
           <Button

@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { getAllTags } from "../services/tags";
+import { addNewTag, deleteTagById, getAllTags, updateTagById } from "../services/tags";
 import toast from "react-hot-toast";
 
 export type TagType = {
@@ -13,7 +13,12 @@ export type TagDataType = {
 
 export type UseTagsContextType = {
     availableTags: TagType[],
-    isLoading: boolean
+    isLoading: boolean,
+    viewTagsModal: boolean,
+    setViewTagsModal: React.Dispatch<React.SetStateAction<boolean>>,
+    addNewTagFn: (tagLabel: TagDataType) => Promise<void>,
+    deleteTagFn: (id: string) => Promise<void>,
+    updateTagFn: (updatedData: TagType) => Promise<void>
 }
 
 type TagsProviderType = {
@@ -24,7 +29,12 @@ const initValue: TagType[] = []
 
 const initContextState: UseTagsContextType = {
     availableTags: [],
-    isLoading: false
+    isLoading: false,
+    viewTagsModal: false,
+    setViewTagsModal: () => { },
+    addNewTagFn: async () => { },
+    deleteTagFn: async () => { },
+    updateTagFn: async () => { }
 }
 
 export const TagsContext = createContext(initContextState)
@@ -32,6 +42,60 @@ export const TagsContext = createContext(initContextState)
 const TagsProvider = ({ children }: TagsProviderType): ReactNode => {
     const [availableTags, setAvailableTags] = useState<TagType[]>(initValue)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [viewTagsModal, setViewTagsModal] = useState<boolean>(false)
+
+    const addNewTagFn = async (tagLabel: TagDataType) => {
+        try {
+            setIsLoading(true)
+            const response = await addNewTag(tagLabel)
+            setAvailableTags(prev => [...prev, response])
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error("Error adding new tag!!!")
+            }
+        } finally {
+            setIsLoading(false)
+            toast.success("Tag added successfully!!!")
+        }
+    }
+
+    const deleteTagFn = async (id: string) => {
+        try {
+            setIsLoading(true)
+            await deleteTagById(id)
+            setAvailableTags(prev => prev.filter(tag => tag.id !== id))
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error("Error deleting tag!!!")
+            }
+        } finally {
+            setIsLoading(false)
+            toast.success("Tag deleted successfully!!!")
+        }
+    }
+
+    const updateTagFn = async (updatedData: TagType) => {
+        try {
+            setIsLoading(true)
+            const response = await updateTagById(updatedData)
+            setAvailableTags(prev => {
+                return prev.map(tag => {
+                    if (tag.id === updatedData.id) {
+                        return response as TagType
+                    } else {
+                        return tag
+                    }
+                })
+            })
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error("Error updating tag!!!")
+            }
+        } finally {
+            setIsLoading(false)
+            toast.success("Tag updated successfully!!!")
+        }
+    }
 
     useEffect(() => {
         ; (async () => {
@@ -49,7 +113,15 @@ const TagsProvider = ({ children }: TagsProviderType): ReactNode => {
         })()
     }, [])
 
-    return <TagsContext.Provider value={{ availableTags, isLoading }}>
+    return <TagsContext.Provider value={{
+        availableTags,
+        isLoading,
+        viewTagsModal,
+        setViewTagsModal,
+        addNewTagFn,
+        deleteTagFn,
+        updateTagFn
+    }}>
         {children}
     </TagsContext.Provider>
 }

@@ -34,11 +34,16 @@ const EditNote = () => {
     const editNote = async (data: NoteDataType) => {
         try {
             setIsLoading(true)
-            const response = await updateNoteById(id as string,{...data }) as NoteType
+            const response = await updateNoteById(id as string, { ...data }) as NoteType
             setNotes(prev => {
-                const existingNotes = prev.filter(note => note.id !== id)
-                return [...existingNotes, response]
-            }) 
+                return prev.map(note => {
+                    if (note.id === id) {
+                        return response as NoteType
+                    }else{
+                        return note
+                    }
+                })
+            })
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message)
@@ -59,7 +64,7 @@ const EditNote = () => {
         <>
             <Navbar />
             <div className="m-2">
-                <h3 className="text-2xl">Edit Note</h3>
+                <h3 className="text-xl my-1">Edit Note</h3>
                 <NoteForm
                     onSubmit={editNote}
                     id={note?.id}

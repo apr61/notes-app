@@ -16,7 +16,6 @@ const ShowNote = () => {
   useEffect(() => {
     ; (async (id: string) => {
       try {
-        setIsLoading(true)
         const data = await getNoteById(id)
         setNote(data)
       } catch (error) {
@@ -46,14 +45,13 @@ const ShowNote = () => {
         toast.error(error.message)
         return
       }
-    } finally{
+    } finally {
       setIsLoading(false)
       toast.success('Note deleted successfully')
     }
     navigate('/')
   }
   document.title = note?.title as string
-
   return (
     <div className="my-4 p-2">
       <header className="flex gap-4 items-center">
@@ -74,6 +72,15 @@ const ShowNote = () => {
           />
         </div>
       </header>
+      <div className="flex gap-2 my-4 ml-14">
+        {
+          note?.tags.map(tag => (
+            <p key={tag.id}
+              className="px-4 py-1 bg-blue-500 w-fit text-white rounded-full capitalize"
+            >{tag.tag}</p>
+          ))
+        }
+      </div>
       <div className="mt-6">
         <MarkdownPreview markdown={note?.markdown as string} />
       </div>

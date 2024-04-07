@@ -1,16 +1,19 @@
 import { ReactNode, createContext, useEffect, useState } from "react"
 import { getAllNotes } from "../services/notes"
 import toast from "react-hot-toast"
+import { TagType } from "./Tags"
 
 export type NoteType = {
     id: string,
     title: string,
-    markdown: string
+    markdown: string,
+    tags: TagType[]
 }
 
 export type NoteDataType = {
     title: string,
     markdown: string
+    tagIds: string[]
 }
 
 export type UseNotesContextType = {
@@ -25,7 +28,7 @@ type NotesProviderProps = {
 
 const initValue: NoteType[] = []
 
-const initContextState: UseNotesContextType = { notes: [], isLoading: false, setNotes: () => {} }
+const initContextState: UseNotesContextType = { notes: [], isLoading: false, setNotes: () => { } }
 
 export const NotesContext = createContext<UseNotesContextType>(initContextState)
 
@@ -43,7 +46,7 @@ const NotesProvider = ({ children }: NotesProviderProps): ReactNode => {
                 setNotes([])
                 return
             }
-        }finally{
+        } finally {
             setIsLoading(false)
         }
     }

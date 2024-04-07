@@ -34,11 +34,11 @@ const EditNote = () => {
     const editNote = async (data: NoteDataType) => {
         try {
             setIsLoading(true)
-            await updateNoteById({ id: id as string, ...data })
+            const response = await updateNoteById(id as string,{...data }) as NoteType
             setNotes(prev => {
                 const existingNotes = prev.filter(note => note.id !== id)
-                return [...existingNotes, { id: id as string, ...data }]
-            })
+                return [...existingNotes, response]
+            }) 
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message)
@@ -65,6 +65,7 @@ const EditNote = () => {
                     id={note?.id}
                     title={note?.title}
                     markdown={note?.markdown}
+                    tags={note?.tags}
                 />
             </div>
         </>

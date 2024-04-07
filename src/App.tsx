@@ -5,6 +5,7 @@ import CreateNote from "./pages/CreateNote"
 import ShowNote from "./pages/ShowNote"
 import NotFound from "./components/NotFound"
 import EditNote from "./pages/EditNote"
+import TagsSelect from "./components/TagsSelect"
 
 function App() {
 	return (
@@ -12,10 +13,11 @@ function App() {
 			<Route path='/' element={<MainLayout />}>
 				<Route path="/" index element={<Home />} />
 				<Route path="/:id" element={<ShowNote />} />
-				<Route path="*" element={<NotFound />} />
+				<Route path="/tags" element={<TagsSelect />} />
 			</Route>
 			<Route path="/create" index element={<CreateNote />} />
 			<Route path="/:id/edit" element={<EditNote />} />
+			<Route path="*" element={<NotFound />} />
 		</Routes>
 	)
 }

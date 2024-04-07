@@ -12,10 +12,14 @@ const TagsList = () => {
     const handleAddOnClick = () => {
         if (value.trim().length === 0) {
             toast.error("New tag must be required...")
+            setValue('')
+            setEdit(undefined)
             return
         }
         if (edit) {
-            updateTagFn({id: edit.id, tag: value})
+            updateTagFn({ id: edit.id, tag: value })
+            setValue('')
+            setEdit(undefined)
             return
         }
         addNewTagFn({ tag: value })
@@ -28,7 +32,6 @@ const TagsList = () => {
         setValue(editingTag.tag)
         setEdit(editingTag)
     }
-    // TODO:: Edit of TAG after adding a TAG is not  working.
 
     const content = availableTags.map((tag) => (
         <div className="flex gap-2 my-2" key={tag.id}>

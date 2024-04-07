@@ -27,8 +27,6 @@ const TagsList = () => {
         const editingTag = availableTags.filter(tag => tag.id === id)[0]
         setValue(editingTag.tag)
         setEdit(editingTag)
-        console.log(edit)
-        console.log(value)
     }
     // TODO:: Edit of TAG after adding a TAG is not  working.
 

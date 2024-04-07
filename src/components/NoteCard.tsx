@@ -1,20 +1,27 @@
 import { Link } from "react-router-dom"
+import { TagType } from "../context/Tags"
 
 type NoteCardProps = {
     id: string,
-    title: string
+    title: string,
+    tags: TagType[]
 }
 
-const NoteCard = ({id, title} : NoteCardProps) => {
-    return <article className="border p-4 rounded-md">
+const NoteCard = ({ id, title, tags }: NoteCardProps) => {
+    return <article className="border p-4 rounded-md flex flex-col gap-2">
         <h2 className="text-2xl capitalize">
             <Link to={id}>
                 {title}
             </Link>
         </h2>
-        <div className="mt-4 flex flex-wrap gap-2">
-            <p className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md">tag1</p>
-            <p className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md">tag1</p>
+        <div className="flex flex-wrap gap-2 mt-auto">
+            {
+                tags.map(tag => (
+                    <p key={tag.id}
+                        className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md capitalize"
+                    >{tag.tag}</p>
+                ))
+            }
         </div>
     </article>
 }

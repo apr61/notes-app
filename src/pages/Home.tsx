@@ -1,27 +1,38 @@
 import { useState } from "react"
-import Button from "../components/Button"
 import NotesList from "../components/NotesList"
+import TagsSelect from "../components/TagsSelect"
+import { TagType } from "../context/Tags"
+import SelectedTagsList from "../components/SelectedTags"
 
 const Home = () => {
   const [title, setTitle] = useState<string>('')
+  const [selectedTags, setSelectedTags] = useState<TagType[]>([])
+
+  const handleRemoveTag = (id: string) => {
+		setSelectedTags(prev => prev.filter(tags => tags.id !== id))
+	}
+  
   document.title = 'Home - Notes App'
+
   return (
     <>
-      <form className="my-4 flex flex-col sm:flex-row gap-2">
-        <div className="flex flex-col gap-2 flex-1">
-          <label htmlFor="title" className="text-2xl">Title</label>
+      <form className="mt-8 mb-4 flex flex-col md:flex-row gap-2 max-w-[70rem] w-full">
+        <div className="md:w-1/2">
           <input
             type="search"
-            id="title"
+            placeholder="Search Note by title"
             name="title"
-            className="border-2 rounded-md border-gray-200 px-2 py-1"
+            className="border-2 rounded-md border-gray-200 px-2 py-2 w-full"
             autoFocus={true}
             required
             value={title}
             onChange={e => setTitle(e.target.value)} />
         </div>
-        <Button text="Search" handleClick={() => { }} styles={"bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-2 text-white self-end"} />
+        <div className="flex gap-2 flex-wrap md:w-1/2 w-full">
+          <TagsSelect selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+        </div>
       </form>
+			<SelectedTagsList selectedTags={selectedTags} handleRemoveTag={handleRemoveTag} />
       <NotesList />
     </>
   )

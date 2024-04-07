@@ -34,10 +34,15 @@ const EditNote = () => {
     const editNote = async (data: NoteDataType) => {
         try {
             setIsLoading(true)
-            await updateNoteById({ id: id as string, ...data })
+            const response = await updateNoteById(id as string, { ...data }) as NoteType
             setNotes(prev => {
-                const existingNotes = prev.filter(note => note.id !== id)
-                return [...existingNotes, { id: id as string, ...data }]
+                return prev.map(note => {
+                    if (note.id === id) {
+                        return response as NoteType
+                    }else{
+                        return note
+                    }
+                })
             })
         } catch (error) {
             if (error instanceof Error) {
@@ -59,12 +64,13 @@ const EditNote = () => {
         <>
             <Navbar />
             <div className="m-2">
-                <h3 className="text-2xl">Edit Note</h3>
+                <h3 className="text-xl my-1">Edit Note</h3>
                 <NoteForm
                     onSubmit={editNote}
                     id={note?.id}
                     title={note?.title}
                     markdown={note?.markdown}
+                    tags={note?.tags}
                 />
             </div>
         </>

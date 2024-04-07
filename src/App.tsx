@@ -8,15 +8,18 @@ import EditNote from "./pages/EditNote"
 
 function App() {
 	return (
-		<Routes>
-			<Route path='/' element={<MainLayout />}>
-				<Route path="/" index element={<Home />} />
-				<Route path="/:id" element={<ShowNote />} />
+		<>
+			<Routes>
+				<Route path='/' element={<MainLayout />}>
+					<Route path="/" index element={<Home />} />
+					<Route path="/:id" element={<ShowNote />} />
+				</Route>
+				<Route path="/create" index element={<CreateNote />} />
+				<Route path="/:id/edit" element={<EditNote />} />
 				<Route path="*" element={<NotFound />} />
-			</Route>
-			<Route path="/create" index element={<CreateNote />} />
-			<Route path="/:id/edit" element={<EditNote />} />
-		</Routes>
+			</Routes>
+		</>
+
 	)
 }
 

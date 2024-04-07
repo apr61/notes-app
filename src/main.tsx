@@ -5,14 +5,17 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import NotesProvider from './context/Notes.tsx'
+import TagsProvider from './context/Tags.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <NotesProvider>
-        <App />
-        <Toaster position='bottom-center' />
-      </NotesProvider>
+      <TagsProvider>
+        <NotesProvider>
+          <App />
+          <Toaster position='bottom-center' />
+        </NotesProvider>
+      </TagsProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )

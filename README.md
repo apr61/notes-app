@@ -46,4 +46,4 @@ VITE_APP_FIREBASE_MEASUREMENT_ID = ""
 npm run dev
 ```
 
-Happing Coding 😉
+Happy Coding 😉

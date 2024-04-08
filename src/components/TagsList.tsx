@@ -5,7 +5,7 @@ import toast from "react-hot-toast"
 import { TagType } from "../context/Tags"
 
 const TagsList = () => {
-    const { isLoading, availableTags, addNewTagFn, deleteTagFn, updateTagFn } = useTags()
+    const { availableTags, addNewTagFn, deleteTagFn, updateTagFn } = useTags()
     const [value, setValue] = useState<string>('')
     const [edit, setEdit] = useState<TagType | undefined>(undefined)
 
@@ -37,7 +37,7 @@ const TagsList = () => {
         <div className="flex gap-2 my-2" key={tag.id}>
             <input
                 type="text"
-                className="border p-2 rounded-md w-full"
+                className="border dark:border-gray-800 p-2 rounded-md w-full dark:bg-black"
                 value={tag.tag}
                 readOnly={true}
             />
@@ -61,7 +61,7 @@ const TagsList = () => {
                 <input
                     type="text"
                     id="new-tag"
-                    className="border p-2 rounded-md w-full"
+                    className="border dark:border-gray-800 p-2 rounded-md w-full dark:bg-black"
                     placeholder="New Tag"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
@@ -73,9 +73,9 @@ const TagsList = () => {
                 />
             </div>
             <h3 className="text-lg">Available Tags</h3>
-            <div className="my-2 h-[20rem] overflow-y-scroll shadow-inner">
+            <div className="my-2 h-[20rem] overflow-y-scroll shadow-inner dark:shadow-slate-800">
                 {
-                    isLoading ? <h1>Loading...</h1> : content
+                    content
                 }
             </div>
         </section>

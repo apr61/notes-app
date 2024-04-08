@@ -32,7 +32,7 @@ const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
 
 	return (
 		<>
-			<select onChange={handleOnChange} title="Tags" name="tags" className="px-4 py-2 border rounded-md capitalize w-full">
+			<select onChange={handleOnChange} title="Tags" name="tags" className="px-4 py-2 border rounded-md capitalize w-full dark:bg-black dark:border-gray-800">
 				<option className="capitalize" value="">{isLoading ? "Loading..." : "Select Tag"}</option>
 				{
 					availableTags.map(tag => (

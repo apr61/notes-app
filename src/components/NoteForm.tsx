@@ -53,7 +53,7 @@ const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = ""
 						<input
 							type="text"
 							name="title"
-							className="w-full border-2 rounded-md border-gray-200 px-3 py-2"
+							className="w-full border rounded-md border-gray-200 px-3 py-2 dark:bg-black dark:border-gray-800"
 							autoFocus={true}
 							defaultValue={title}
 							onChange={(e) => setTitle(e.target.value)}
@@ -83,12 +83,13 @@ const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = ""
 			<div className="md:grid md:grid-cols-2 lg:grid-cols-[1fr_22rem] xl:grid-cols-[1fr_27rem] gap-2">
 				<Editor
 					height='73vh'
-					className="md:w-1/2 p-2 rounded-md border"
+					className="md:w-1/2 p-2 rounded-md border dark:border-gray-800"
 					defaultValue={markdown}
 					onChange={handleEditorText}
 					defaultLanguage="markdown"
+					theme="vs-dark"
 				/>
-				<div className="h-[73vh] p-4 border-2 mt-2 md:mt-0 rounded-md overflow-y-scroll">
+				<div className="h-[73vh] p-4 border mt-2 md:mt-0 rounded-md overflow-y-scroll dark:border-gray-800">
 					<MarkdownPreview markdown={markdown as string} />
 				</div>
 			</div>

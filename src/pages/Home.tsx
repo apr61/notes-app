@@ -22,7 +22,7 @@ const Home = () => {
             type="search"
             placeholder="Search Note by title"
             name="title"
-            className="border-2 rounded-md border-gray-200 px-2 py-2 w-full"
+            className="border-2  px-2 py-2 w-full rounded-md border-gray-200 dark:bg-black dark:border-gray-800"
             autoFocus={true}
             required
             value={title}

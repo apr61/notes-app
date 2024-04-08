@@ -73,7 +73,7 @@ const TagsList = () => {
                 />
             </div>
             <h3 className="text-lg">Available Tags</h3>
-            <div className="my-2 h-[20rem] overflow-y-scroll shadow-inner">
+            <div className="my-2 h-[20rem] overflow-y-scroll shadow-inner dark:shadow-slate-800">
                 {
                     content
                 }

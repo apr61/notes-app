@@ -42,6 +42,7 @@ export const NotesContext = createContext<UseNotesContextType>(initContextState)
 const NotesProvider = ({ children }: NotesProviderProps): ReactNode => {
     const [notes, setNotes] = useState<NoteType[]>(initValue)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const navigate = useNavigate()
     const getAllNotesHelper = async () => {
         try {

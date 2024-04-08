@@ -8,7 +8,7 @@ type NoteCardProps = {
 }
 
 const NoteCard = ({ id, title, tags }: NoteCardProps) => {
-    return <article className="border p-4 rounded-md flex flex-col gap-2">
+    return <article className="border dark:border-gray-800 p-4 rounded-md flex flex-col gap-2">
         <h2 className="text-2xl capitalize">
             <Link to={id}>
                 {title}

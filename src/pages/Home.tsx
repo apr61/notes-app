@@ -1,11 +1,10 @@
-import { useState } from "react"
 import NotesList from "../components/NotesList"
 import TagsSelect from "../components/TagsSelect"
 import SelectedTagsList from "../components/SelectedTags"
+import useNotes from "../hooks/useNotes"
 
 const Home = () => {
-  const [title, setTitle] = useState<string>('')
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const {title, setTitle, setSelectedTags, selectedTags} = useNotes()
 
   const handleRemoveTag = (id: string) => {
     setSelectedTags(prev => prev.filter(tagId => tagId !== id))

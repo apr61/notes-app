@@ -1,15 +1,8 @@
 import { ReactNode, createContext, useEffect, useState } from "react"
 import { addNewNote, deleteNoteById, getAllNotes } from "../services/notes"
 import toast from "react-hot-toast"
-import { TagType } from "./Tags"
 import { useNavigate } from "react-router-dom"
-
-export type NoteType = {
-    id: string,
-    title: string,
-    markdown: string,
-    tags: TagType[]
-}
+import useDebounce from "../hooks/useDebounce"
 
 export type NoteDataType = {
     title: string,
@@ -17,7 +10,7 @@ export type NoteDataType = {
     tagIds: string[]
 }
 
-export type NoteDbType = {
+export type NoteType = {
     id: string,
     title: string,
     markdown: string,
@@ -25,43 +18,55 @@ export type NoteDbType = {
 }
 
 export type UseNotesContextType = {
-    notes: NoteDbType[],
+    notes: NoteType[],
     isLoading: boolean,
-    setNotes: React.Dispatch<React.SetStateAction<NoteDbType[]>>,
+    setNotes: React.Dispatch<React.SetStateAction<NoteType[]>>,
     handleDeleteNote: (id: string) => Promise<void>,
-    createNewNote: (data: NoteDataType) => Promise<void>
+    createNewNote: (data: NoteDataType) => Promise<void>,
+    title: string,
+    setTitle: React.Dispatch<React.SetStateAction<string>>,
+    selectedTags: string[],
+    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 type NotesProviderProps = {
     children: ReactNode
 }
 
-const initValue: NoteDbType[] = []
+const initValue: NoteType[] = []
 
 const initContextState: UseNotesContextType = {
     notes: [],
     isLoading: false,
     setNotes: () => { },
     handleDeleteNote: async () => { },
-    createNewNote: async () => { }
+    createNewNote: async () => { },
+    title: '',
+    setSelectedTags: () => {},
+    selectedTags: [],
+    setTitle: () => {}
 }
 
 export const NotesContext = createContext<UseNotesContextType>(initContextState)
 
 const NotesProvider = ({ children }: NotesProviderProps): ReactNode => {
-    const [notes, setNotes] = useState<NoteDbType[]>(initValue)
+    const [notes, setNotes] = useState<NoteType[]>(initValue)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [title, setTitle] = useState<string>('')
+    const [selectedTags, setSelectedTags] = useState<string[]>([])
+    const delay: number = 1000
+    const debouncedTitle = useDebounce(title, delay)
+    const debouncedTags = useDebounce(selectedTags, delay)
     const navigate = useNavigate()
 
-
-    const getAllNotesHelper = async () => {
+    const getAllNotesHelper = async (title:string, selectedTags:string[]) => {
         try {
             setIsLoading(true)
-            let data: NoteDbType[] = await getAllNotes()
+            let data: NoteType[] = await getAllNotes(title, selectedTags)
             setNotes(data)
         } catch (error) {
             if (error instanceof Error) {
-                toast.error('Error loading data')
+                toast.error(error.message)
                 setNotes([])
                 return
             }
@@ -88,7 +93,7 @@ const NotesProvider = ({ children }: NotesProviderProps): ReactNode => {
     const createNewNote = async (data: NoteDataType) => {
         try {
             setIsLoading(true)
-            const response = await addNewNote(data)
+            const response = await addNewNote({...data, title: data.title.toLowerCase()})
             setNotes(prev => [...prev, response])
         }
         catch (error) {
@@ -103,8 +108,8 @@ const NotesProvider = ({ children }: NotesProviderProps): ReactNode => {
         }
     }
     useEffect(() => {
-        getAllNotesHelper()
-    }, [])
+        getAllNotesHelper(debouncedTitle, debouncedTags)
+    }, [debouncedTitle, debouncedTags])
 
     return <NotesContext.Provider value={
         {
@@ -112,7 +117,11 @@ const NotesProvider = ({ children }: NotesProviderProps): ReactNode => {
             isLoading,
             setNotes,
             handleDeleteNote,
-            createNewNote
+            createNewNote,
+            selectedTags,
+            setSelectedTags,
+            title,
+            setTitle
         }}>
         {children}
     </NotesContext.Provider>

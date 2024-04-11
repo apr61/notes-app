@@ -3,9 +3,7 @@ import NoteForm from "../components/NoteForm"
 import useNotes from "../hooks/useNotes"
 
 const CreateNote = () => {
-    const { createNewNote, isLoading } = useNotes()
-
-    if (isLoading) return <h1>Loading...</h1>
+    const { createNewNote } = useNotes()
 
     document.title = 'Create new note - Notes App'
 

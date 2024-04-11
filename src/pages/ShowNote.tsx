@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { getNoteById } from "../services/notes"
-import { NoteDbType } from "../context/Notes"
+import { NoteType } from "../context/Notes"
 import toast from "react-hot-toast"
 import NotFound from "../components/NotFound"
 import MarkdownPreview from "../components/MarkdownPreview"
@@ -12,7 +12,7 @@ import useTags from "../hooks/useTags"
 
 const ShowNote = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [note, setNote] = useState<NoteDbType | null>()
+  const [note, setNote] = useState<NoteType | null>()
   const { id } = useParams()
   const navigate = useNavigate()
   const { handleDeleteNote } = useNotes()

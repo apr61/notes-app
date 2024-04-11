@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import NoteForm from "../components/NoteForm"
-import { NoteDataType, NoteDbType } from "../context/Notes"
+import { NoteDataType, NoteType } from "../context/Notes"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
 import { getNoteById, updateNoteById } from "../services/notes"
@@ -10,7 +10,7 @@ import useNotes from "../hooks/useNotes"
 
 const EditNote = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const [note, setNote] = useState<NoteDbType | null>()
+	const [note, setNote] = useState<NoteType | null>()
 	const { setNotes } = useNotes()
 	const { id } = useParams()
 	const navigate = useNavigate()
@@ -34,11 +34,11 @@ const EditNote = () => {
 	const editNote = async (data: NoteDataType) => {
 		try {
 			setIsLoading(true)
-			const response = await updateNoteById(id as string, { ...data })
+			const response = await updateNoteById(id as string, { ...data})
 			setNotes(prev => {
 				return prev.map(note => {
 					if (note.id === id) {
-						return response as NoteDbType
+						return response as NoteType
 					} else {
 						return note
 					}

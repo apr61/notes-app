@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Button from "./Button"
 import { Editor } from "@monaco-editor/react"
-import { NoteDataType, NoteDbType } from "../context/Notes"
+import { NoteDataType, NoteType } from "../context/Notes"
 import toast from "react-hot-toast"
 import MarkdownPreview from "./MarkdownPreview"
 import TagsSelect from "./TagsSelect"
@@ -10,7 +10,7 @@ import SelectedTagsList from "./SelectedTags"
 
 type NoteFormProps = {
 	onSubmit: (data: NoteDataType) => void,
-} & Partial<NoteDbType>
+} & Partial<NoteType>
 
 const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = "", tagIds = [] }: NoteFormProps) => {
 	const [title, setTitle] = useState<string>(editTitle)

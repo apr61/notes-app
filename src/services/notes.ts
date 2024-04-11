@@ -1,25 +1,35 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, or, query, updateDoc, where } from "firebase/firestore";
 import { NoteDataType, NoteType } from "../context/Notes";
 import { db } from "../firebase-config.js"
-import { getTagByIds } from "./tags.js";
-import { TagType } from "../context/Tags.js";
 
 export async function addNewNote(newNote: NoteDataType): Promise<NoteType> {
     const docRef = await addDoc(collection(db, "notes"), newNote)
-    const tagsWithIds = await getTagByIds(newNote.tagIds)
-    return { id: docRef.id, tags: tagsWithIds, ...newNote }
+    return { id: docRef.id, ...newNote }
 }
 
-export async function getAllNotes(): Promise<NoteType[]> {
+export async function getAllNotes(title: string, selectedTags: string[]): Promise<NoteType[]> {
     const allNotes: NoteType[] = []
-    const querySnapshot = await getDocs(collection(db, "notes"))
+    const notesRef = collection(db, "notes")
+    let q;
+    if (title.trim().length > 0 && selectedTags.length > 0) {
+        q = query(notesRef, or(where('title', 'array-contains', title.split('')),
+            where('tagIds', 'array-contains-any', selectedTags)))
+    }
+    else if (title.trim().length > 0) {
+        q = query(notesRef, where('title', '>=', title), where('title', '<=', title + '\uf8ff'))
+    } else if (selectedTags.length > 0) {
+        q = query(notesRef, where('tagIds', 'array-contains-any', selectedTags))
+    } else {
+        q = query(notesRef, limit(9))
+    }
+
+    const querySnapshot = await getDocs(q)
     for (const doc of querySnapshot.docs) {
-        const tagsWithIds: TagType[] = await getTagByIds(doc.data().tagIds)
         const tempNote: NoteType = {
             id: doc.id,
             title: doc.data().title,
             markdown: doc.data().markdown,
-            tags: tagsWithIds
+            tagIds: doc.data().tagIds
         }
         allNotes.push(tempNote)
     }
@@ -31,8 +41,12 @@ export async function getNoteById(id: string): Promise<NoteType | null> {
     const docRef = doc(db, "notes", id)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
-        const tagsWithIds = await getTagByIds(docSnap.data().tagIds)
-        return { id: id, title: docSnap.data().title, markdown: docSnap.data().markdown, tags: tagsWithIds }
+        return {
+            id: id,
+            title: docSnap.data().title,
+            markdown: docSnap.data().markdown,
+            tagIds: docSnap.data().tagIds
+        }
     } else {
         return null
     }
@@ -42,8 +56,7 @@ export async function updateNoteById(id: string, data: NoteDataType): Promise<No
     const docRef = doc(db, "notes", id)
     try {
         await updateDoc(docRef, { title: data.title, markdown: data.markdown, tagIds: data.tagIds })
-        const tagsWithIds: TagType[] = await getTagByIds(data.tagIds)
-        return {id: id, title: data.title, markdown: data.markdown, tags: tagsWithIds}
+        return { id: id, title: data.title, markdown: data.markdown, tagIds: data.tagIds }
     } catch (error) {
         if (error instanceof Error) {
             return

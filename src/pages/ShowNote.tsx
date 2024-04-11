@@ -7,13 +7,16 @@ import NotFound from "../components/NotFound"
 import MarkdownPreview from "../components/MarkdownPreview"
 import Button from "../components/Button"
 import useNotes from "../hooks/useNotes"
+import { ShowNoteSkeleton } from "../components/Skeletons"
+import useTags from "../hooks/useTags"
 
 const ShowNote = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [note, setNote] = useState<NoteType | null>()
   const { id } = useParams()
   const navigate = useNavigate()
-  const {handleDeleteNote} = useNotes()
+  const { handleDeleteNote } = useNotes()
+  const {getTagById} = useTags()
 
   useEffect(() => {
     ; (async (id: string) => {
@@ -30,7 +33,7 @@ const ShowNote = () => {
     })(id as string)
   }, [id])
 
-  if (isLoading) return <h1>Loading...</h1>
+  if (isLoading) return <ShowNoteSkeleton />
 
   if (note === null) return <NotFound />
 
@@ -61,11 +64,14 @@ const ShowNote = () => {
       </header>
       <div className="flex gap-2 my-4 ml-4 md:ml-14">
         {
-          note?.tags.map(tag => (
-            <p key={tag.id}
-              className="px-4 py-1 bg-blue-500 w-fit text-white rounded-full capitalize"
-            >{tag.tag}</p>
-          ))
+          note?.tagIds.map(tagId => {
+            const tag = getTagById(tagId)
+            if (tag) {
+              return <p key={tag.id}
+                className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md capitalize"
+              >{tag.tag}</p>
+            }
+          })
         }
       </div>
       <div className="mt-6">

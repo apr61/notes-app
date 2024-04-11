@@ -1,17 +1,15 @@
-import { useState } from "react"
 import NotesList from "../components/NotesList"
 import TagsSelect from "../components/TagsSelect"
-import { TagType } from "../context/Tags"
 import SelectedTagsList from "../components/SelectedTags"
+import useNotes from "../hooks/useNotes"
 
 const Home = () => {
-  const [title, setTitle] = useState<string>('')
-  const [selectedTags, setSelectedTags] = useState<TagType[]>([])
+  const {title, setTitle, setSelectedTags, selectedTags} = useNotes()
 
   const handleRemoveTag = (id: string) => {
-		setSelectedTags(prev => prev.filter(tags => tags.id !== id))
-	}
-  
+    setSelectedTags(prev => prev.filter(tagId => tagId !== id))
+  }
+
   document.title = 'Home - Notes App'
 
   return (
@@ -32,7 +30,7 @@ const Home = () => {
           <TagsSelect selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
         </div>
       </form>
-			<SelectedTagsList selectedTags={selectedTags} handleRemoveTag={handleRemoveTag} />
+      <SelectedTagsList selectedTags={selectedTags} handleRemoveTag={handleRemoveTag} />
       <NotesList />
     </>
   )

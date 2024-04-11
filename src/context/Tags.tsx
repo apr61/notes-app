@@ -18,7 +18,8 @@ export type UseTagsContextType = {
     setViewTagsModal: React.Dispatch<React.SetStateAction<boolean>>,
     addNewTagFn: (tagLabel: TagDataType) => Promise<void>,
     deleteTagFn: (id: string) => Promise<void>,
-    updateTagFn: (updatedData: TagType) => Promise<void>
+    updateTagFn: (updatedData: TagType) => Promise<void>,
+    getTagById: (id: string) => TagType | undefined
 }
 
 type TagsProviderType = {
@@ -34,7 +35,8 @@ const initContextState: UseTagsContextType = {
     setViewTagsModal: () => { },
     addNewTagFn: async () => { },
     deleteTagFn: async () => { },
-    updateTagFn: async () => { }
+    updateTagFn: async () => { },
+    getTagById: () => {return {} as TagType}
 }
 
 export const TagsContext = createContext(initContextState)
@@ -97,6 +99,10 @@ const TagsProvider = ({ children }: TagsProviderType): ReactNode => {
         }
     }
 
+    const getTagById = (id: string): TagType | undefined => {
+        return availableTags.find(tag => tag.id === id)
+    }
+
     useEffect(() => {
         ; (async () => {
             try {
@@ -120,7 +126,8 @@ const TagsProvider = ({ children }: TagsProviderType): ReactNode => {
         setViewTagsModal,
         addNewTagFn,
         deleteTagFn,
-        updateTagFn
+        updateTagFn,
+        getTagById
     }}>
         {children}
     </TagsContext.Provider>

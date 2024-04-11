@@ -2,21 +2,20 @@ import { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Button from "./Button"
 import { Editor } from "@monaco-editor/react"
-import { NoteDataType, NoteType } from "../context/Notes"
+import { NoteDataType, NoteDbType } from "../context/Notes"
 import toast from "react-hot-toast"
 import MarkdownPreview from "./MarkdownPreview"
 import TagsSelect from "./TagsSelect"
-import { TagType } from "../context/Tags"
 import SelectedTagsList from "./SelectedTags"
 
 type NoteFormProps = {
 	onSubmit: (data: NoteDataType) => void,
-} & Partial<NoteType>
+} & Partial<NoteDbType>
 
-const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = "", tags = [] }: NoteFormProps) => {
+const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = "", tagIds = [] }: NoteFormProps) => {
 	const [title, setTitle] = useState<string>(editTitle)
 	const [markdown, setMarkdown] = useState<string | undefined>(editMarkdown)
-	const [selectedTags, setSelectedTags] = useState<TagType[]>(tags as TagType[])
+	const [selectedTags, setSelectedTags] = useState<string[]>(tagIds)
 
 	const navigate = useNavigate()
 
@@ -33,7 +32,7 @@ const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = ""
 		onSubmit({
 			title: title,
 			markdown: markdown as string,
-			tagIds: selectedTags.map(tag => tag.id)
+			tagIds: selectedTags
 		})
 	}
 
@@ -42,7 +41,7 @@ const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = ""
 	}
 
 	const handleRemoveTag = (id: string) => {
-		setSelectedTags(prev => prev.filter(tags => tags.id !== id))
+		setSelectedTags(prev => prev.filter(tagId => tagId !== id))
 	}
 
 	return (

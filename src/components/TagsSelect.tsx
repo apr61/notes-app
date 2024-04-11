@@ -1,10 +1,9 @@
 import { ChangeEvent } from "react"
 import useTags from "../hooks/useTags"
-import { TagType } from "../context/Tags"
 
 type TagsSelectProps = {
-	selectedTags: TagType[],
-	setSelectedTags: React.Dispatch<React.SetStateAction<TagType[]>>
+	selectedTags: string[],
+	setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
@@ -14,19 +13,23 @@ const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
 	function handleOnChange(e: ChangeEvent<HTMLSelectElement>) {
 		const tagId = e.target.value
 		setSelectedTags(prev => {
-			let newTag: TagType | undefined
-			if ((prev.every(tag => tag.id !== tagId) === true) || prev.length === 0) {
-				newTag = availableTags.filter(tag => tag.id === tagId)[0]
+			let newTag: string | undefined
+			if ((prev.every(id => id !== tagId) === true) || prev.length === 0) {
+				for(const tag of availableTags){
+					if(tag.id === tagId){
+						newTag = tagId
+					}
+				}
 			}
 			if (newTag === undefined) {
 				return prev
 			}
-			return [...prev, newTag] as TagType[]
+			return [...prev, newTag]
 		})
 	}
 
 	const isTagSelected = (id: string) => {
-		const res = selectedTags?.some(tag => tag.id === id)
+		const res = selectedTags?.some(tagId => tagId === id)
 		return res
 	}
 

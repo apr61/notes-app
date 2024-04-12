@@ -1,4 +1,4 @@
-import useTags from "../hooks/useTags"
+import useTags from "../../hooks/useTags"
 
 type SelectedTagsListProps = {
     selectedTags: string[],
@@ -20,7 +20,6 @@ const SelectedTagsList = ({ selectedTags, handleRemoveTag }: SelectedTagsListPro
                     {tag?.tag}
                     <span className="ml-1 text-lg font-bold">&times;</span>
                 </button>
-
             }
             )}
         </div>

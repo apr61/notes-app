@@ -1,5 +1,6 @@
-import { ChangeEvent } from "react"
-import useTags from "../hooks/useTags"
+import { ChangeEvent, useEffect } from "react"
+import { fetchAllTags, getTagsStatus, selectAllTags } from "./tagsSlice"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 
 type TagsSelectProps = {
 	selectedTags: string[],
@@ -8,7 +9,15 @@ type TagsSelectProps = {
 
 const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
 
-	const { isLoading, availableTags } = useTags()
+	const availableTags = useAppSelector(selectAllTags)
+    const tagsStatus = useAppSelector(getTagsStatus)
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        if(tagsStatus === 'idle'){
+            dispatch(fetchAllTags())
+        }
+    }, [])
 
 	function handleOnChange(e: ChangeEvent<HTMLSelectElement>) {
 		const tagId = e.target.value
@@ -36,7 +45,7 @@ const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
 	return (
 		<>
 			<select onChange={handleOnChange} title="Tags" name="tags" className="px-4 py-2 border rounded-md capitalize w-full dark:bg-black dark:border-gray-800">
-				<option className="capitalize" value="">{isLoading ? "Loading..." : "Select Tag"}</option>
+				<option className="capitalize" value="">{tagsStatus === 'loading' ? "Loading..." : "Select Tag"}</option>
 				{
 					availableTags.map(tag => (
 						<option

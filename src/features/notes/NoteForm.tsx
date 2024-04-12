@@ -1,12 +1,12 @@
 import { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Button from "./Button"
+import Button from "../../components/Button"
 import { Editor } from "@monaco-editor/react"
-import { NoteDataType, NoteType } from "../context/Notes"
+import { NoteDataType, NoteType } from "../../context/Notes"
 import toast from "react-hot-toast"
-import MarkdownPreview from "./MarkdownPreview"
-import TagsSelect from "./TagsSelect"
-import SelectedTagsList from "./SelectedTags"
+import MarkdownPreview from "../../components/MarkdownPreview"
+import TagsSelect from "../tags/TagsSelect"
+import SelectedTagsList from "../tags/SelectedTags"
 
 type NoteFormProps = {
 	onSubmit: (data: NoteDataType) => void,

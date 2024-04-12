@@ -1,13 +1,16 @@
 import { useState } from "react"
-import useTags from "../hooks/useTags"
-import Button from "./Button"
+import Button from "../../components/Button"
 import toast from "react-hot-toast"
-import { TagType } from "../context/Tags"
+import { TagType } from "../../context/Tags"
+import { addTag, deleteTag, editTag, selectAllTags } from "./tagsSlice"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 
 const TagsList = () => {
-    const { availableTags, addNewTagFn, deleteTagFn, updateTagFn } = useTags()
     const [value, setValue] = useState<string>('')
     const [edit, setEdit] = useState<TagType | undefined>(undefined)
+
+    const availableTags = useAppSelector(selectAllTags)
+    const dispatch = useAppDispatch()
 
     const handleAddOnClick = () => {
         if (value.trim().length === 0) {
@@ -17,12 +20,13 @@ const TagsList = () => {
             return
         }
         if (edit) {
-            updateTagFn({ id: edit.id, tag: value })
+            // updateTagFn({ id: edit.id, tag: value })
+            dispatch(editTag({id: edit.id, tag: value}))
             setValue('')
             setEdit(undefined)
             return
         }
-        addNewTagFn({ tag: value })
+        dispatch(addTag({tag: value}))
         setValue('')
         setEdit(undefined)
     }
@@ -48,7 +52,7 @@ const TagsList = () => {
             />
             <Button
                 text="Delete"
-                handleClick={() => deleteTagFn(tag.id)}
+                handleClick={() => dispatch(deleteTag(tag.id))}
                 styles="p-2 md:p-3 bg-red-500 rounded-md text-white hover:bg-red-600"
             />
         </div>

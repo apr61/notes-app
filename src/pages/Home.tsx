@@ -1,6 +1,6 @@
-import NotesList from "../components/NotesList"
-import TagsSelect from "../components/TagsSelect"
-import SelectedTagsList from "../components/SelectedTags"
+import NotesList from "../features/notes/NotesList"
+import SelectedTagsList from "../features/tags/SelectedTags"
+import TagsSelect from "../features/tags/TagsSelect"
 import useNotes from "../hooks/useNotes"
 
 const Home = () => {

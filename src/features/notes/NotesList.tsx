@@ -1,6 +1,6 @@
-import useNotes from "../hooks/useNotes"
+import useNotes from "../../hooks/useNotes"
 import NoteCard from "./NoteCard"
-import { NotesListSkeleton } from "./Skeletons"
+import { NotesListSkeleton } from "../../components/Skeletons"
 
 const NotesList = () => {
 	const { isLoading, notes } = useNotes()

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
-import NoteForm from "../components/NoteForm"
+import NoteForm from "../features/notes/NoteForm"
 import { NoteDataType, NoteType } from "../context/Notes"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"

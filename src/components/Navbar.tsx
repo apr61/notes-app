@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import Button from "./Button"
 import useTags from "../hooks/useTags"
 import CustomModal from "./CustomModal"
-import TagsList from "./TagsList"
+import TagsList from "../features/tags/TagsList"
 
 const Navbar = () => {
   const { viewTagsModal, setViewTagsModal } = useTags()

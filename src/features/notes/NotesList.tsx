@@ -1,10 +1,17 @@
-import useNotes from "../../hooks/useNotes"
+
 import NoteCard from "./NoteCard"
 import { NotesListSkeleton } from "../../components/Skeletons"
+import { useAppSelector } from "../../app/hooks"
+import { getNotesError, getNotesStatus, selectAllNotes } from "./notesSlice"
+import toast from "react-hot-toast"
 
 const NotesList = () => {
-	const { isLoading, notes } = useNotes()
-	if (isLoading) return <NotesListSkeleton />
+	const notesStatus = useAppSelector(getNotesStatus)
+	const notes = useAppSelector(selectAllNotes)
+	const notesError = useAppSelector(getNotesError)
+
+	if (notesStatus === "loading") return <NotesListSkeleton />
+	if(notesStatus === "failed") toast.error(notesError)
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-3 mt-4">
 			{

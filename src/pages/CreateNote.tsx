@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar"
+import { Navbar } from "../components"
 import NoteForm from "../features/notes/NoteForm"
 import useNotes from "../hooks/useNotes"
 

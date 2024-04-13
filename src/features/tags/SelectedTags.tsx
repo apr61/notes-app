@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../app/hooks"
-import Button from "../../components/Button"
+import { Button } from "../../components"
 import { getTagById } from "./tagsSlice"
 
 type SelectedTagsListProps = {

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Button from "../../components/Button"
+import { Button } from "../../components"
 import toast from "react-hot-toast"
 import { TagType } from "../../context/Tags"
 import { addTag, deleteTag, editTag, getTagsStatus, selectAllTags } from "./tagsSlice"

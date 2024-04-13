@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Button from "../../components/Button"
+import { Button } from "../../components"
 import { Editor } from "@monaco-editor/react"
 import { NoteDataType, NoteType } from "../../context/Notes"
 import toast from "react-hot-toast"

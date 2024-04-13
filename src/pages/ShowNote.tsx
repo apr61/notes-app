@@ -8,7 +8,7 @@ import MarkdownPreview from "../components/MarkdownPreview"
 import Button from "../components/Button"
 import useNotes from "../hooks/useNotes"
 import { ShowNoteSkeleton } from "../components/Skeletons"
-import useTags from "../hooks/useTags"
+import SingleTag from "../features/tags/SingleTag"
 
 const ShowNote = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -16,7 +16,6 @@ const ShowNote = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { handleDeleteNote } = useNotes()
-  const {getTagById} = useTags()
 
   useEffect(() => {
     ; (async (id: string) => {
@@ -64,14 +63,9 @@ const ShowNote = () => {
       </header>
       <div className="flex gap-2 my-4 ml-4 md:ml-14">
         {
-          note?.tagIds.map(tagId => {
-            const tag = getTagById(tagId)
-            if (tag) {
-              return <p key={tag.id}
-                className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md capitalize"
-              >{tag.tag}</p>
-            }
-          })
+          note?.tagIds.map(tagId => (
+            <SingleTag key={tagId} tagId={tagId} />
+          ))
         }
       </div>
       <div className="mt-6">

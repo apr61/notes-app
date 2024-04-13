@@ -47,5 +47,13 @@ export async function updateTagById(updatedTag: TagType): Promise<TagType | unde
 
 export async function deleteTagById(id: string){
     const docRef = doc(db, "tags", id)
-    await deleteDoc(docRef)
+    try{
+        await deleteDoc(docRef)
+        return id
+    }catch(err)
+    {
+        if(err instanceof Error){
+            throw new Error(err.message)
+        }
+    }
 }

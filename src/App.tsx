@@ -5,8 +5,17 @@ import CreateNote from "./pages/CreateNote"
 import ShowNote from "./pages/ShowNote"
 import NotFound from "./components/NotFound"
 import EditNote from "./pages/EditNote"
+import { useAppDispatch } from "./app/hooks"
+import { fetchAllTags } from "./features/tags/tagsSlice"
+import { useEffect } from "react"
 
 function App() {
+	const dispatch = useAppDispatch()
+
+	useEffect(() => {
+		dispatch(fetchAllTags())
+	}, [])
+	
 	return (
 		<Routes>
 			<Route path='/' element={<MainLayout />}>

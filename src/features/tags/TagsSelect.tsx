@@ -1,6 +1,6 @@
-import { ChangeEvent, useEffect } from "react"
-import { fetchAllTags, getTagsStatus, selectAllTags } from "./tagsSlice"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { ChangeEvent } from "react"
+import { getTagsStatus, selectAllTags } from "./tagsSlice"
+import { useAppSelector } from "../../app/hooks"
 
 type TagsSelectProps = {
 	selectedTags: string[],
@@ -10,22 +10,15 @@ type TagsSelectProps = {
 const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
 
 	const availableTags = useAppSelector(selectAllTags)
-    const tagsStatus = useAppSelector(getTagsStatus)
-    const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        if(tagsStatus === 'idle'){
-            dispatch(fetchAllTags())
-        }
-    }, [])
+	const tagsStatus = useAppSelector(getTagsStatus)
 
 	function handleOnChange(e: ChangeEvent<HTMLSelectElement>) {
 		const tagId = e.target.value
 		setSelectedTags(prev => {
 			let newTag: string | undefined
 			if ((prev.every(id => id !== tagId) === true) || prev.length === 0) {
-				for(const tag of availableTags){
-					if(tag.id === tagId){
+				for (const tag of availableTags) {
+					if (tag.id === tagId) {
 						newTag = tagId
 					}
 				}

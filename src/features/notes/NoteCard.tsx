@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
-import { useAppSelector } from "../../app/hooks"
-import { getTagById } from "../tags/tagsSlice"
+import SingleTag from "../tags/SingleTag"
 
 type NoteCardProps = {
     id: string,
@@ -17,14 +16,9 @@ const NoteCard = ({ id, title, tagIds }: NoteCardProps) => {
         </h2>
         <div className="flex flex-wrap gap-2 mt-auto">
             {
-                tagIds.map(id => {
-                    const tag = useAppSelector((state) => getTagById(state, id))
-                    if (tag) {
-                        return <p key={tag.id}
-                            className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md capitalize"
-                        >{tag.tag}</p>
-                    }
-                })
+                tagIds.map(id => (
+                    <SingleTag key={id} tagId={id} />
+                ))
             }
         </div>
     </article>

@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react"
-import useTags from "../hooks/useTags"
+import { getTagsStatus, selectAllTags } from "./tagsSlice"
+import { useAppSelector } from "../../app/hooks"
 
 type TagsSelectProps = {
 	selectedTags: string[],
@@ -8,15 +9,16 @@ type TagsSelectProps = {
 
 const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
 
-	const { isLoading, availableTags } = useTags()
+	const availableTags = useAppSelector(selectAllTags)
+	const tagsStatus = useAppSelector(getTagsStatus)
 
 	function handleOnChange(e: ChangeEvent<HTMLSelectElement>) {
 		const tagId = e.target.value
 		setSelectedTags(prev => {
 			let newTag: string | undefined
 			if ((prev.every(id => id !== tagId) === true) || prev.length === 0) {
-				for(const tag of availableTags){
-					if(tag.id === tagId){
+				for (const tag of availableTags) {
+					if (tag.id === tagId) {
 						newTag = tagId
 					}
 				}
@@ -36,7 +38,7 @@ const TagsSelect = ({ selectedTags, setSelectedTags }: TagsSelectProps) => {
 	return (
 		<>
 			<select onChange={handleOnChange} title="Tags" name="tags" className="px-4 py-2 border rounded-md capitalize w-full dark:bg-black dark:border-gray-800">
-				<option className="capitalize" value="">{isLoading ? "Loading..." : "Select Tag"}</option>
+				<option className="capitalize" value="">{tagsStatus === 'loading' ? "Loading..." : "Select Tag"}</option>
 				{
 					availableTags.map(tag => (
 						<option

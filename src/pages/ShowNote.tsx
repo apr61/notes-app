@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { getNoteById } from "../services/notes"
+import { deleteNoteById, getNoteById } from "../services/notes"
 import { NoteType } from "../context/Notes"
 import toast from "react-hot-toast"
-import NotFound from "../components/NotFound"
-import MarkdownPreview from "../components/MarkdownPreview"
-import Button from "../components/Button"
-import useNotes from "../hooks/useNotes"
+import {NotFound} from "../components"
+import {MarkdownPreview} from "../components"
+import { Button } from "../components"
 import { ShowNoteSkeleton } from "../components/Skeletons"
-import useTags from "../hooks/useTags"
+import SingleTag from "../features/tags/SingleTag"
+import { useAppDispatch } from "../app/hooks"
+import { deleteNote } from "../features/notes/notesSlice"
 
 const ShowNote = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [note, setNote] = useState<NoteType | null>()
   const { id } = useParams()
   const navigate = useNavigate()
-  const { handleDeleteNote } = useNotes()
-  const {getTagById} = useTags()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     ; (async (id: string) => {
@@ -41,6 +41,22 @@ const ShowNote = () => {
     navigate(-1)
   }
 
+  const handleDelete = async (id: string) => {
+    try {
+      setIsLoading(true)
+      await deleteNoteById(id)
+      dispatch(deleteNote(id))
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error("Error deleting note!!!")
+      }
+    } finally {
+      setIsLoading(false)
+      toast.success("Note deleted successfully!!!")
+      navigate('/')
+    }
+  }
+
   document.title = note?.title as string
   return (
     <div className="my-2 md:my-4 p-2">
@@ -57,21 +73,16 @@ const ShowNote = () => {
           >Edit</Link>
           <Button
             styles="py-2 px-2 md:px-6 rounded-md text-red-500 border border-red-500 hover:bg-red-500 hover:text-white self-end"
-            handleClick={() => handleDeleteNote(id as string)}
+            handleClick={() => handleDelete(id!)}
             text="Delete"
           />
         </div>
       </header>
       <div className="flex gap-2 my-4 ml-4 md:ml-14">
         {
-          note?.tagIds.map(tagId => {
-            const tag = getTagById(tagId)
-            if (tag) {
-              return <p key={tag.id}
-                className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md capitalize"
-              >{tag.tag}</p>
-            }
-          })
+          note?.tagIds.map(tagId => (
+            <SingleTag key={tagId} tagId={tagId} />
+          ))
         }
       </div>
       <div className="mt-6">

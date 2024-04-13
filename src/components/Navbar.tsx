@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom"
 import Button from "./Button"
-import useTags from "../hooks/useTags"
 import CustomModal from "./CustomModal"
-import TagsList from "./TagsList"
+import TagsList from "../features/tags/TagsList"
+import { useDispatch } from "react-redux"
+import { closeTagsModal, getTagsModal, openTagsModal } from "../features/tags/tagsSlice"
+import { useAppSelector } from "../app/hooks"
 
 const Navbar = () => {
-  const { viewTagsModal, setViewTagsModal } = useTags()
+  const tagsModal = useAppSelector(getTagsModal)
+  const dispatch = useDispatch()
   return (
     <>
       <nav className="px-4 py-2 border-b dark:border-b-gray-800 flex items-center">
@@ -21,12 +24,12 @@ const Navbar = () => {
           <Button
             btnType="button"
             styles="py-2 px-2 md:px-4 rounded-md bg-white border-2 text-gray-500 hover:bg-gray-500 hover:text-white dark:border-0"
-            handleClick={() => setViewTagsModal(true)}
+            handleClick={() => dispatch(openTagsModal())}
             text="Edit Tags"
           />
         </div>
       </nav>
-      <CustomModal isOpen={viewTagsModal} closeHandle={() => setViewTagsModal(false)}>
+      <CustomModal isOpen={tagsModal} closeHandle={() => dispatch(closeTagsModal())}>
         <TagsList />
       </CustomModal>
     </>

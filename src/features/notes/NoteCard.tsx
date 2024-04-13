@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import useTags from "../hooks/useTags"
+import SingleTag from "../tags/SingleTag"
 
 type NoteCardProps = {
     id: string,
@@ -8,7 +8,6 @@ type NoteCardProps = {
 }
 
 const NoteCard = ({ id, title, tagIds }: NoteCardProps) => {
-    const {getTagById} = useTags()
     return <article className="border dark:border-gray-800 p-4 rounded-md flex flex-col gap-2">
         <h2 className="text-2xl capitalize">
             <Link to={id}>
@@ -17,14 +16,9 @@ const NoteCard = ({ id, title, tagIds }: NoteCardProps) => {
         </h2>
         <div className="flex flex-wrap gap-2 mt-auto">
             {
-                tagIds.map(id => {
-                    const tag = getTagById(id)
-                    if (tag) {
-                        return <p key={tag.id}
-                            className="px-3 py-1 bg-blue-500 w-fit text-white rounded-md capitalize"
-                        >{tag.tag}</p>
-                    }
-                })
+                tagIds.map(id => (
+                    <SingleTag key={id} tagId={id} />
+                ))
             }
         </div>
     </article>

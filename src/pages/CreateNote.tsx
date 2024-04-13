@@ -1,5 +1,5 @@
-import Navbar from "../components/Navbar"
-import NoteForm from "../components/NoteForm"
+import { Navbar } from "../components"
+import NoteForm from "../features/notes/NoteForm"
 import useNotes from "../hooks/useNotes"
 
 const CreateNote = () => {

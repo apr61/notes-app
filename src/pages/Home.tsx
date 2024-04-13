@@ -1,14 +1,27 @@
-import NotesList from "../components/NotesList"
-import TagsSelect from "../components/TagsSelect"
-import SelectedTagsList from "../components/SelectedTags"
-import useNotes from "../hooks/useNotes"
+import { useEffect, useState } from "react"
+import NotesList from "../features/notes/NotesList"
+import SelectedTagsList from "../features/tags/SelectedTags"
+import TagsSelect from "../features/tags/TagsSelect"
+import { fetchAllNotes } from "../features/notes/notesSlice"
+import { useAppDispatch } from "../app/hooks"
+import useDebounce from "../hooks/useDebounce"
+
+const DebounceDelay = 1000
 
 const Home = () => {
-  const {title, setTitle, setSelectedTags, selectedTags} = useNotes()
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [title, setTitle] = useState<string>('')
+  const deboundedTitle = useDebounce(title, DebounceDelay)
+  const deboundedTags = useDebounce(selectedTags, DebounceDelay)
+  const dispatch = useAppDispatch()
 
   const handleRemoveTag = (id: string) => {
     setSelectedTags(prev => prev.filter(tagId => tagId !== id))
   }
+
+  useEffect(() => {
+    dispatch(fetchAllNotes({title: deboundedTitle, selectedTags: deboundedTags}))
+  }, [deboundedTitle, deboundedTags])
 
   document.title = 'Home - Notes App'
 

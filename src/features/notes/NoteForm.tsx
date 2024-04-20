@@ -9,7 +9,7 @@ import TagsSelect from "../tags/TagsSelect"
 import SelectedTagsList from "../tags/SelectedTags"
 
 type NoteFormProps = {
-	onSubmit: (data: NoteDataType) => void,
+	onSubmit: (data: NoteDataType) => Promise<void>,
 } & Partial<NoteType>
 
 const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = "", tagIds = [] }: NoteFormProps) => {
@@ -68,7 +68,7 @@ const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = ""
 						btnType="submit"
 						styles="py-2 lg:px-6 px-4 rounded-md bg-blue-500 text-white hover:bg-blue-600"
 						text="Save"
-						handleClick={() => { }}
+						handleClick={() => {  }}
 					/>
 					<Button
 						btnType="button"

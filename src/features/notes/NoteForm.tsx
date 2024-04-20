@@ -9,7 +9,7 @@ import TagsSelect from "../tags/TagsSelect"
 import SelectedTagsList from "../tags/SelectedTags"
 
 type NoteFormProps = {
-	onSubmit: (data: NoteDataType) => Promise<void>,
+	onSubmit: (data: NoteDataType) => Promise<void> 
 } & Partial<NoteType>
 
 const NoteForm = ({ onSubmit, title: editTitle = "", markdown: editMarkdown = "", tagIds = [] }: NoteFormProps) => {

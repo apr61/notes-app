@@ -2,30 +2,31 @@ import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import { NoteDataType } from "../context/Notes";
 import NoteForm from "../features/notes/NoteForm";
-import useNotes from "../hooks/useNotes";
 import { addNewNote } from "../services/notes";
 import toast from "react-hot-toast";
+import { useAppDispatch } from "../app/hooks";
+import { addNewNoteLocal, noteStatusChange } from "../features/notes/notesSlice";
 
 const CreateNote = () => {
-  const { setIsLoading, setNotes } = useNotes();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   document.title = "Create new note - Notes App";
 
   const createNewNote = async (data: NoteDataType) => {
     try {
-      setIsLoading(true);
+      dispatch(noteStatusChange({payload: 'loading'}))
       const response = await addNewNote({
         ...data,
         title: data.title.toLowerCase(),
       });
-      setNotes((prev) => [...prev, response]);
+      dispatch(addNewNoteLocal(response))
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
       }
     } finally {
-      setIsLoading(false);
+      dispatch(noteStatusChange({payload: 'idle'}))
       toast.success("Note created successfully!!!");
       navigate("/");
     }

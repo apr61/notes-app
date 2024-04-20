@@ -21,6 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchAllNotes({title: deboundedTitle, selectedTags: deboundedTags}))
+    console.log("use effect")
   }, [deboundedTitle, deboundedTags])
 
   document.title = 'Home - Notes App'

@@ -27,7 +27,6 @@ function App() {
 					</Suspense>
 				} />
 				<Route path="/:id" element={
-
 					<Suspense fallback={<ShowNoteSkeleton />}>
 						<ShowNote />
 					</Suspense>

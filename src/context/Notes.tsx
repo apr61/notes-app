@@ -8,6 +8,7 @@ export type NoteDataType = {
   title: string;
   markdown: string;
   tagIds: string[];
+  userId: string
 };
 
 export type NoteType = {

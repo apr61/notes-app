@@ -3,7 +3,7 @@ import Button from "./Button";
 import Input from "./Input";
 import { loginInUserWithPassword } from "../services/auth";
 import toast from "react-hot-toast";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type UserForm = {
   email: string;
